@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:tutis/answer.dart';
-import 'package:tutis/nav/navbar.dart';
-import 'package:tutis/question.dart';
+
+import './answer.dart';
+import './nav/navbar.dart';
+import './question.dart';
 
 void main() => runApp(const Tutis());
 
@@ -16,14 +17,50 @@ class _TutisState extends State<Tutis> {
   var questionIndex = 0;
 
   var questions = [
-    'You can lead a cow down stairs but not up stairs.',
-    'Apples are round, and oranges are round.',
-    'You can lead a cow down stairs but not up stairs.',
-    'Apples are round, and oranges are round.',
+    {
+      'questionText': 'What\'s your favorite color?',
+      // 'answers': [
+      //   {'text': 'Black', 'score': 10},
+      //   {'text': 'Red', 'score': 5},
+      //   {'text': 'blue', 'score': 3},
+      //   {'text': 'White', 'score': 1},
+      // ],
+      'answers': ['Black', 'Red', 'blue', 'White'],
+    },
+    {
+      'questionText': 'What\'s your favorite animal?',
+      // 'answers': [
+      //   {'text': 'Dog', 'score': 10},
+      //   {'text': 'Cat', 'score': 5},
+      //   {'text': 'Rabbit', 'score': 3},
+      //   {'text': 'Lion', 'score': 1},
+      // ],
+      'answers': [
+        'Dog',
+        'Cat',
+        'Rabbit',
+        'Lion',
+      ],
+    },
+    {
+      'questionText': 'What\'s your favorite instructor?',
+      'answers': [
+        'Max',
+        'Max',
+        'Max',
+        'Max',
+      ],
+      // 'answers': [
+      //   {'text': 'Max', 'score': 10},
+      //   {'text': 'Mosh', 'score': 5},
+      //   {'text': 'Angela', 'score': 3},
+      //   {'text': 'Josh', 'score': 1},
+      // ],
+    },
   ];
 
   // ignore: curly_braces_in_flow_control_structures
-  void getNextQuestion() {
+  getNextQuestion() {
     if (questionIndex + 1 <= questions.length) {
       setState(() {
         questionIndex = questionIndex + 1;
@@ -31,7 +68,7 @@ class _TutisState extends State<Tutis> {
     }
   }
 
-  void getPreviousQuestion() {
+  getPreviousQuestion() {
     if (questionIndex > 0) {
       setState(() {
         questionIndex = questionIndex - 1;
@@ -59,19 +96,19 @@ class _TutisState extends State<Tutis> {
         body: Container(
           width: double.infinity,
           margin: const EdgeInsets.all(30),
-          child: Column(
-            children: <Widget>[
-              Question(
-                questionIndex: questions[questionIndex],
-              ),
-              const Answer(
-                answerText: 'Next',
-              ),
-              const Answer(
-                answerText: 'Previous',
-              ),
-            ],
-          ),
+          child: Column(children: <Widget>[
+            Question(
+              questionIndex: questions[questionIndex]['questionText'],
+            ),
+            ...(questions[questionIndex]['answers'] as List<String>).map(
+              (answer) {
+                return Answer(
+                  answer,
+                  getNextQuestion,
+                );
+              },
+            ),
+          ]),
         ),
       ),
     );
