@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class Answer extends StatelessWidget {
   final answerText;
-  final Function selectHandler;
+  final VoidCallback selectHandler;
 
   const Answer(this.answerText, this.selectHandler);
 
@@ -11,11 +11,11 @@ class Answer extends StatelessWidget {
     return SizedBox(
       width: double.infinity,
       child: ElevatedButton(
-        // style: const ButtonStyle(
-        //   backgroundColor: Colors.blue,
+        // style: ButtonStyle(
+        //   backgroundColor:  Colors.blue,
         //   foregroundColor: Colors.white,
         // ),
-        onPressed: null,
+        onPressed: selectHandler,
         child: Text(answerText),
       ),
     );
