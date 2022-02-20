@@ -1,6 +1,6 @@
 const questions = [
   {
-    'questionText': 'What\'s your favorite color?',
+    'questionText': 'What\'s your most favorite color?',
     'answers': [
       {'text': 'Black', 'score': 10},
       {'text': 'Red', 'score': 5},
