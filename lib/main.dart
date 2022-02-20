@@ -49,6 +49,13 @@ class _TutisState extends State<Tutis> {
     }
   }
 
+  restartQuiz() {
+    setState(() {
+      questionIndex = 0;
+      _totalScore = 0;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -58,8 +65,8 @@ class _TutisState extends State<Tutis> {
           backgroundColor: Colors.blueGrey[900],
         ),
         floatingActionButton: FloatingActionButton(
-          onPressed: nextQuestion,
-          child: const Icon(Icons.arrow_forward),
+          onPressed: restartQuiz,
+          child: const Icon(Icons.refresh),
           backgroundColor: Colors.blueGrey[900],
           hoverColor: Colors.blue,
           tooltip: 'Next',
