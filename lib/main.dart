@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import './sec2/body.dart';
 import './sec2/navbar.dart';
 
 void main() => runApp(const ExpenseTracker());
@@ -16,9 +17,12 @@ class ExpenseTracker extends StatelessWidget {
           backgroundColor: Colors.deepPurple[900],
         ),
         drawer: const NavBar(),
-        body: const Center(
-          child: Text('Expense Tracker'),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {},
+          child: const Icon(Icons.add),
+          backgroundColor: Colors.deepPurple[900],
         ),
+        body: const Body(),
       ),
     );
   }
