@@ -14,6 +14,10 @@ class ExpenseTracker extends StatelessWidget {
         navigationBarTheme: const NavigationBarThemeData(
           backgroundColor: Colors.white,
         ),
+        colorScheme:
+            ColorScheme.fromSwatch(primarySwatch: Colors.green).copyWith(
+          secondary: Colors.amber,
+        ),
         primarySwatch: Colors.green,
       ),
       darkTheme: ThemeData(

@@ -88,20 +88,20 @@ class _BodyState extends State<Body> {
         ],
       ),
       drawer: Drawer(
-        backgroundColor: Colors.green[100],
+        backgroundColor: Theme.of(context).primaryColor,
         child: ListView(
-          children: const <Widget>[
+          children: <Widget>[
             DrawerHeader(
-              child: Text('Drawer Header'),
+              child: const Text('Drawer Header'),
               decoration: BoxDecoration(
-                color: Color.fromARGB(255, 88, 112, 89),
+                color: Theme.of(context).primaryColor,
               ),
             ),
-            ListTile(
+            const ListTile(
               title: Text('Item 1'),
               onTap: null,
             ),
-            ListTile(
+            const ListTile(
               title: Text('Item 2'),
               onTap: null,
             ),
