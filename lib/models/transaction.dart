@@ -22,7 +22,13 @@ final List<Transaction> transactions = [
   Transaction(
     id: 't2',
     title: 'Weekly Groceries',
-    amount: 16.53,
+    amount: 56.54,
+    date: DateTime.now(),
+  ),
+  Transaction(
+    id: 't3',
+    title: 'Monthly Expenses',
+    amount: 12.00,
     date: DateTime.now(),
   ),
 ];
