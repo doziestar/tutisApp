@@ -13,6 +13,12 @@ class ExpenseTracker extends StatelessWidget {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.add),
+              onPressed: () {},
+            ),
+          ],
           title: const Text('Expense Tracker'),
           backgroundColor: Colors.deepPurple[900],
         ),
