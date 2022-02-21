@@ -31,22 +31,4 @@ final List<Transaction> transactions = [
     amount: 12.00,
     date: DateTime.now(),
   ),
-  Transaction(
-    id: 't1',
-    title: 'New Shoes',
-    amount: 69.99,
-    date: DateTime.now(),
-  ),
-  Transaction(
-    id: 't2',
-    title: 'Weekly Groceries',
-    amount: 56.54,
-    date: DateTime.now(),
-  ),
-  Transaction(
-    id: 't3',
-    title: 'Monthly Expenses',
-    amount: 12.00,
-    date: DateTime.now(),
-  ),
 ];

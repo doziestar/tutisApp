@@ -4,6 +4,9 @@ import './models/transaction.dart';
 
 void main() => runApp(const ExpenseTracker());
 
+final titleController = TextEditingController();
+final amountController = TextEditingController();
+
 class ExpenseTracker extends StatefulWidget {
   const ExpenseTracker({Key? key}) : super(key: key);
 
@@ -12,6 +15,64 @@ class ExpenseTracker extends StatefulWidget {
 }
 
 class _ExpenseTrackerState extends State<ExpenseTracker> {
+  void _addTransaction(String title, double amount) {
+    final newTransaction = Transaction(
+      id: DateTime.now().toString(),
+      title: title,
+      amount: amount,
+      date: DateTime.now(),
+    );
+    setState(
+      () {
+        transactions.add(newTransaction);
+      },
+    );
+  }
+
+  void _deleteTransaction(String id) {
+    setState(
+      () {
+        transactions.removeWhere((transaction) => transaction.id == id);
+      },
+    );
+  }
+
+  void _resetTransaction() {
+    titleController.clear();
+    amountController.clear();
+  }
+
+  void _showModalBottomSheet() {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return Container(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              TextField(
+                controller: titleController,
+                decoration: const InputDecoration(
+                  labelText: 'Title',
+                ),
+              ),
+              TextField(
+                controller: amountController,
+                keyboardType:
+                    const TextInputType.numberWithOptions(decimal: true),
+                decoration: const InputDecoration(
+                  labelText: 'Amount',
+                ),
+              ),
+              const TextButton(onPressed: null, child: Text('Add')),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -27,6 +88,9 @@ class _ExpenseTrackerState extends State<ExpenseTracker> {
       ),
       home: Scaffold(
         bottomNavigationBar: BottomNavigationBar(
+          onTap: (value) => {
+            if (value == 1) {_showModalBottomSheet()}
+          },
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(
               icon: Icon(Icons.home),
@@ -71,7 +135,9 @@ class _ExpenseTrackerState extends State<ExpenseTracker> {
           actions: [
             IconButton(
               icon: const Icon(Icons.add),
-              onPressed: () {},
+              onPressed: () {
+                _showModalBottomSheet();
+              },
             )
           ],
           title: const Text("Expense Tracker"),
@@ -108,8 +174,9 @@ class _ExpenseTrackerState extends State<ExpenseTracker> {
                           padding: const EdgeInsets.all(8),
                           child: Column(
                             children: [
-                              const TextField(
-                                decoration: InputDecoration(
+                              TextField(
+                                controller: titleController,
+                                decoration: const InputDecoration(
                                   icon: Icon(Icons.title, color: Colors.green),
                                   label: Text(
                                     'Title',
@@ -117,8 +184,9 @@ class _ExpenseTrackerState extends State<ExpenseTracker> {
                                   ),
                                 ),
                               ),
-                              const TextField(
-                                decoration: InputDecoration(
+                              TextField(
+                                controller: amountController,
+                                decoration: const InputDecoration(
                                   icon: Icon(Icons.attach_money_outlined,
                                       color: Colors.green),
                                   label: Text(
@@ -128,7 +196,17 @@ class _ExpenseTrackerState extends State<ExpenseTracker> {
                                 ),
                               ),
                               TextButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  if (titleController.text.isNotEmpty ||
+                                      amountController.text.isNotEmpty ||
+                                      double.parse(amountController.text) > 0) {
+                                    _addTransaction(
+                                      titleController.text,
+                                      double.parse(amountController.text),
+                                    );
+                                    _resetTransaction();
+                                  }
+                                },
                                 child: const Text(
                                   'Add Expense',
                                   style: TextStyle(
@@ -162,7 +240,9 @@ class _ExpenseTrackerState extends State<ExpenseTracker> {
                                 trailing: IconButton(
                                   color: Colors.red,
                                   icon: const Icon(Icons.delete),
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    _deleteTransaction(transactions[index].id);
+                                  },
                                 ),
                                 leading: const Icon(
                                   Icons.task,
@@ -181,9 +261,89 @@ class _ExpenseTrackerState extends State<ExpenseTracker> {
                   ),
                 ),
               )
-            : const Center(
-                child: Text('No Expenses Added'),
+            : SizedBox(
+                width: double.infinity,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const Text(
+                      'No transactions added yet',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.green,
+                      ),
+                    ),
+                    IconButton(
+                        onPressed: () {},
+                        icon: const Icon(
+                          Icons.restart_alt_rounded,
+                          semanticLabel: 'restart',
+                          color: Colors.blueGrey,
+                        ))
+                  ],
+                )),
+      ),
+    );
+  }
+}
+
+class AddTransactionModal extends StatelessWidget {
+  final TextEditingController titleController = TextEditingController();
+  final TextEditingController amountController = TextEditingController();
+
+  // final VoidCallback addTransaction;
+
+  // AddTransactionModal(this.addTransaction)
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: const Text('Add Transaction'),
+      content: SingleChildScrollView(
+        child: Column(
+          children: [
+            TextField(
+              controller: titleController,
+              decoration: const InputDecoration(
+                icon: Icon(Icons.title, color: Colors.green),
+                label: Text(
+                  'Title',
+                  style: TextStyle(color: Colors.green),
+                ),
               ),
+            ),
+            TextField(
+              controller: amountController,
+              decoration: const InputDecoration(
+                icon: Icon(Icons.attach_money_outlined, color: Colors.green),
+                label: Text(
+                  'Amount',
+                  style: TextStyle(color: Colors.green),
+                ),
+              ),
+            ),
+            TextButton(
+              onPressed: () {
+                if (titleController.text.isNotEmpty ||
+                    amountController.text.isNotEmpty ||
+                    double.parse(amountController.text) > 0) {
+                  // addTransaction();
+
+                  Navigator.pop(context);
+                }
+              },
+              child: const Text(
+                'Add Expense',
+                style: TextStyle(
+                    color: Colors.green,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
