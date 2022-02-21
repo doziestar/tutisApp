@@ -4,6 +4,18 @@ import './widget/transact_list.dart';
 
 void main() => runApp(const ExpenseTracker());
 
+Widget _buildNoTransactions() {
+  return const Center(
+    child: Text(
+      'No transactions added yet!',
+      style: TextStyle(
+        fontSize: 20,
+        fontWeight: FontWeight.bold,
+      ),
+    ),
+  );
+}
+
 class ExpenseTracker extends StatefulWidget {
   const ExpenseTracker({Key? key}) : super(key: key);
 
@@ -90,11 +102,9 @@ class Body extends StatelessWidget {
             margin: const EdgeInsets.all(8),
             height: 50,
             child: Row(
-              children: const <Widget>[
+              children: <Widget>[
                 Center(
-                  child: Text(
-                    'Expense Tracker',
-                  ),
+                  child: _buildNoTransactions(),
                 )
               ],
             ),
