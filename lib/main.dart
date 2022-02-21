@@ -1,20 +1,8 @@
 import 'package:flutter/material.dart';
 
-import './widget/transact_list.dart';
+import './models/transaction.dart';
 
 void main() => runApp(const ExpenseTracker());
-
-Widget _buildNoTransactions() {
-  return const Center(
-    child: Text(
-      'No transactions added yet!',
-      style: TextStyle(
-        fontSize: 20,
-        fontWeight: FontWeight.bold,
-      ),
-    ),
-  );
-}
 
 class ExpenseTracker extends StatefulWidget {
   const ExpenseTracker({Key? key}) : super(key: key);
@@ -27,50 +15,26 @@ class _ExpenseTrackerState extends State<ExpenseTracker> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: ThemeData(
+        navigationBarTheme: const NavigationBarThemeData(
+          backgroundColor: Colors.white,
+        ),
+        primarySwatch: Colors.green,
+      ),
+      darkTheme: ThemeData(
+        brightness: Brightness.dark,
+        primarySwatch: Colors.green,
+      ),
       home: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.green,
-          title: const Text('Expense Tracker'),
-        ),
-        drawer: Drawer(
-          child: ListView(
-            children: <Widget>[
-              const DrawerHeader(
-                child: Text('Expense Tracker'),
-                decoration: BoxDecoration(
-                  color: Colors.green,
-                ),
-              ),
-              ListTile(
-                title: const Text('Expenses'),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const ExpensesPage(),
-                    ),
-                  );
-                },
-              ),
-            ],
-          ),
-        ),
         bottomNavigationBar: BottomNavigationBar(
-          onTap: (value) {
-            print(value);
-          },
-          selectedItemColor: Colors.green,
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(
-              icon: Icon(
-                Icons.home,
-              ),
+              icon: Icon(Icons.home),
               label: 'Home',
-              tooltip: 'Home',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.add),
-              label: 'Add',
+              label: 'add',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.settings),
@@ -78,51 +42,149 @@ class _ExpenseTrackerState extends State<ExpenseTracker> {
             ),
           ],
         ),
-        body: const Body(),
-      ),
-    );
-  }
-}
-
-class Body extends StatelessWidget {
-  const Body({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(8),
-      height: double.infinity,
-      width: double.infinity,
-      child: Column(
-        children: <Widget>[
-          Container(
-            padding: const EdgeInsets.all(8),
-            margin: const EdgeInsets.all(8),
-            height: 50,
-            child: Row(
-              children: <Widget>[
-                Center(
-                  child: _buildNoTransactions(),
-                )
-              ],
-            ),
+        drawer: Drawer(
+          backgroundColor: Colors.green[100],
+          child: ListView(
+            children: const <Widget>[
+              DrawerHeader(
+                child: Text('Drawer Header'),
+                decoration: BoxDecoration(
+                  color: Color.fromARGB(255, 88, 112, 89),
+                ),
+              ),
+              ListTile(
+                title: Text('Item 1'),
+                onTap: null,
+              ),
+              ListTile(
+                title: Text('Item 2'),
+                onTap: null,
+              ),
+            ],
           ),
-          const NewTransaction(),
-          const TransactionList(),
-        ],
+        ),
+        appBar: AppBar(
+          toolbarTextStyle: const TextStyle(color: Colors.white),
+          flexibleSpace: const FlexibleSpaceBar(
+            title: Text('Expense Tracker'),
+          ),
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.add),
+              onPressed: () {},
+            )
+          ],
+          title: const Text("Expense Tracker"),
+        ),
+        body: transactions.isNotEmpty
+            ? SingleChildScrollView(
+                child: Container(
+                  padding: const EdgeInsets.all(8),
+                  child: Column(
+                    children: [
+                      Card(
+                        elevation: 10,
+                        margin: const EdgeInsets.all(8),
+                        child: Container(
+                          height: 150,
+                          padding: const EdgeInsets.all(8),
+                          child: Row(
+                            children: const [
+                              Icon(Icons.attach_money),
+                              SizedBox(width: 8),
+                              Text('Total Expenses'),
+                              SizedBox(width: 8),
+                              Text('\$10,000'),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Card(
+                        elevation: 10,
+                        margin: const EdgeInsets.all(8),
+                        child: Container(
+                          width: double.infinity,
+                          height: 190,
+                          padding: const EdgeInsets.all(8),
+                          child: Column(
+                            children: [
+                              const TextField(
+                                decoration: InputDecoration(
+                                  icon: Icon(Icons.title, color: Colors.green),
+                                  label: Text(
+                                    'Title',
+                                    style: TextStyle(color: Colors.green),
+                                  ),
+                                ),
+                              ),
+                              const TextField(
+                                decoration: InputDecoration(
+                                  icon: Icon(Icons.attach_money_outlined,
+                                      color: Colors.green),
+                                  label: Text(
+                                    'Amount',
+                                    style: TextStyle(color: Colors.green),
+                                  ),
+                                ),
+                              ),
+                              TextButton(
+                                onPressed: () {},
+                                child: const Text(
+                                  'Add Expense',
+                                  style: TextStyle(
+                                      color: Colors.green,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Card(
+                        elevation: 5,
+                        child: Container(
+                          height: 300,
+                          width: double.infinity,
+                          padding: const EdgeInsets.all(8),
+                          child: ListView.builder(
+                            itemExtent: 60,
+                            shrinkWrap: true,
+                            reverse: true,
+                            itemCount: transactions.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              return ListTile(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                style: ListTileStyle.drawer,
+                                isThreeLine: true,
+                                trailing: IconButton(
+                                  color: Colors.red,
+                                  icon: const Icon(Icons.delete),
+                                  onPressed: () {},
+                                ),
+                                leading: const Icon(
+                                  Icons.task,
+                                  color: Colors.green,
+                                ),
+                                title: Text(transactions[index].title),
+                                subtitle: Text(
+                                  '\$${transactions[index].amount.toStringAsFixed(2)}',
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              )
+            : const Center(
+                child: Text('No Expenses Added'),
+              ),
       ),
     );
-  }
-}
-
-class ExpensesPage extends StatelessWidget {
-  const ExpensesPage({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    // TODO: implement build
-    throw UnimplementedError();
   }
 }
