@@ -57,7 +57,19 @@ class _BodyState extends State<Body> {
                   labelText: 'Amount',
                 ),
               ),
-              const TextButton(onPressed: null, child: Text('Add')),
+              TextButton(
+                  onPressed: () {
+                    if (titleController.text.isNotEmpty ||
+                        amountController.text.isNotEmpty ||
+                        double.parse(amountController.text) > 0) {
+                      _addTransaction(
+                        titleController.text,
+                        double.parse(amountController.text),
+                      );
+                      resetTransaction();
+                    }
+                  },
+                  child: const Text('Add')),
             ],
           ),
         );
