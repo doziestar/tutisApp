@@ -12,7 +12,6 @@ class TransactionOutput extends StatelessWidget {
     return Card(
       elevation: 5,
       child: Container(
-        height: 300,
         width: double.infinity,
         padding: const EdgeInsets.all(8),
         child: ListView.builder(
