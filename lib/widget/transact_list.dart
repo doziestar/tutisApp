@@ -136,12 +136,18 @@ class NoTransactionYet extends StatelessWidget {
               ),
             ),
             IconButton(
-                onPressed: () {},
-                icon: const Icon(
-                  Icons.restart_alt_rounded,
-                  semanticLabel: 'restart',
-                  color: Colors.blueGrey,
-                ))
+              onPressed: () {},
+              icon: const Icon(
+                Icons.restart_alt_rounded,
+                semanticLabel: 'restart',
+                color: Colors.blueGrey,
+              ),
+            ),
+            Image.asset(
+              'assets/images/passion.jpg',
+              width: 200,
+              height: 200,
+            ),
           ],
         ));
   }

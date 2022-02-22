@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'body.dart';
 
@@ -19,6 +20,23 @@ class ExpenseTracker extends StatelessWidget {
           secondary: Colors.amber,
         ),
         primarySwatch: Colors.green,
+        fontFamily: 'Quicksand',
+        appBarTheme: ThemeData.light().appBarTheme.copyWith(
+              color: Colors.green,
+              elevation: 5,
+              systemOverlayStyle: SystemUiOverlayStyle.light,
+              iconTheme: const IconThemeData(color: Colors.white),
+              titleTextStyle: const TextStyle(
+                shadows: [
+                  Shadow(
+                    blurRadius: 10,
+                  ),
+                ],
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontFamily: 'OpenSans',
+              ),
+            ),
       ),
       darkTheme: ThemeData(
         brightness: Brightness.dark,

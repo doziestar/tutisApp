@@ -57,9 +57,9 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
-  #   - images/a_dot_ham.jpeg
+  assets:
+    - assets/images/passion.jpg
+    # - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
@@ -76,15 +76,17 @@ flutter:
     - family: OpenSans
       fonts:
         - asset: assets/fonts/OpenSans-Bold.ttf
+          weight: 700
         - asset: assets/fonts/OpenSans-Regular.ttf
-          style: italic
     - family: Quicksand
       fonts:
-        - asset: assets/fonts/Quicksnad-Bold.ttf
-        - asset: assets/fonts/Quicksnad-Light.ttf
-        - asset: assets/fonts/Quicksnad-Medium.ttf
-        - asset: assets/fonts/Quicksnad-Regular.ttf
+        - asset: assets/fonts/Quicksand-Bold.ttf
           weight: 700
+        - asset: assets/fonts/Quicksand-Light.ttf
+          weight: 500
+        - asset: assets/fonts/Quicksand-Medium.ttf
+          weight: 300
+        - asset: assets/fonts/Quicksand-Regular.ttf
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

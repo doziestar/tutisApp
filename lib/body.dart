@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import './models/transaction.dart';
+import './widget/chart.dart';
 import './widget/helper.dart';
 import './widget/transact_list.dart';
 
@@ -32,6 +33,16 @@ class _BodyState extends State<Body> {
         transactions.removeWhere((transaction) => transaction.id == id);
       },
     );
+  }
+
+  List<Transaction> get _recentTransactions {
+    return transactions.where((transaction) {
+      return transaction.date.isAfter(
+        DateTime.now().subtract(
+          const Duration(days: 7),
+        ),
+      );
+    }).toList();
   }
 
   void _showModalBottomSheet(BuildContext context) {
@@ -123,7 +134,9 @@ class _BodyState extends State<Body> {
       appBar: AppBar(
         toolbarTextStyle: const TextStyle(color: Colors.white),
         flexibleSpace: const FlexibleSpaceBar(
-          title: Text('Expense Tracker'),
+          title: Text(
+            'Expense Tracker',
+          ),
         ),
         actions: [
           IconButton(
@@ -133,7 +146,6 @@ class _BodyState extends State<Body> {
             },
           )
         ],
-        title: const Text("Expense Tracker"),
       ),
       body: transactions.isNotEmpty
           ? SingleChildScrollView(
@@ -141,23 +153,7 @@ class _BodyState extends State<Body> {
                 padding: const EdgeInsets.all(8),
                 child: Column(
                   children: [
-                    Card(
-                      elevation: 10,
-                      margin: const EdgeInsets.all(8),
-                      child: Container(
-                        height: 150,
-                        padding: const EdgeInsets.all(8),
-                        child: Row(
-                          children: const [
-                            Icon(Icons.attach_money),
-                            SizedBox(width: 8),
-                            Text('Total Expenses'),
-                            SizedBox(width: 8),
-                            Text('\$10,000'),
-                          ],
-                        ),
-                      ),
-                    ),
+                    Chart(_recentTransactions),
                     AddTransactionCard(_addTransaction),
                     TransactionOutput(_deleteTransaction),
                   ],
