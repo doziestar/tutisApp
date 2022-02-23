@@ -13,12 +13,12 @@ class Body extends StatefulWidget {
 }
 
 class _BodyState extends State<Body> {
-  void _addTransaction(String title, double amount) {
+  void _addTransaction(String title, double amount, DateTime date) {
     final newTransaction = Transaction(
       id: DateTime.now().toString(),
       title: title,
       amount: amount,
-      date: DateTime.now(),
+      date: date,
     );
     setState(
       () {
@@ -76,6 +76,7 @@ class _BodyState extends State<Body> {
                       _addTransaction(
                         titleController.text,
                         double.parse(amountController.text),
+                        dateController,
                       );
                       resetTransaction();
                     }

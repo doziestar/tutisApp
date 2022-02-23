@@ -57,7 +57,7 @@ class TransactionOutput extends StatelessWidget {
 }
 
 class AddTransactionCard extends StatelessWidget {
-  final void Function(String, double) _addTransaction;
+  final void Function(String, double, DateTime) _addTransaction;
   // final VoidCallback _resetTransaction;
 
   const AddTransactionCard(this._addTransaction);
@@ -117,9 +117,11 @@ class AddTransactionCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   const Icon(Icons.date_range, color: Colors.green),
-                  const Text(
-                    'No Date selected! ',
-                    style: TextStyle(color: Colors.red),
+                  Text(
+                    dateController == null
+                        ? 'No Date selected! '
+                        : DateFormat().add_yMd().format(dateController),
+                    style: const TextStyle(color: Colors.red),
                   ),
                   TextButton(
                     onPressed: () => _presentDatePicker(context),
@@ -140,6 +142,7 @@ class AddTransactionCard extends StatelessWidget {
                     _addTransaction(
                       titleController.text,
                       double.parse(amountController.text),
+                      dateController,
                     );
                     resetTransaction();
                   }
