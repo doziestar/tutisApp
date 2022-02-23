@@ -91,6 +91,23 @@ class _BodyState extends State<Body> {
 
   @override
   Widget build(BuildContext context) {
+    final appBar = AppBar(
+      toolbarTextStyle: const TextStyle(color: Colors.white),
+      flexibleSpace: const FlexibleSpaceBar(
+        title: Text(
+          'Expense Tracker',
+        ),
+      ),
+      actions: [
+        IconButton(
+          icon: const Icon(Icons.add),
+          onPressed: () {
+            _showModalBottomSheet(context);
+          },
+        )
+      ],
+    );
+    final mediaQuery = MediaQuery.of(context);
     return Scaffold(
       bottomNavigationBar: BottomNavigationBar(
         onTap: (value) => {
@@ -132,31 +149,31 @@ class _BodyState extends State<Body> {
           ],
         ),
       ),
-      appBar: AppBar(
-        toolbarTextStyle: const TextStyle(color: Colors.white),
-        flexibleSpace: const FlexibleSpaceBar(
-          title: Text(
-            'Expense Tracker',
-          ),
-        ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.add),
-            onPressed: () {
-              _showModalBottomSheet(context);
-            },
-          )
-        ],
-      ),
+      appBar: appBar,
       body: transactions.isNotEmpty
           ? SingleChildScrollView(
               child: Container(
                 padding: const EdgeInsets.all(8),
                 child: Column(
                   children: [
-                    Chart(_recentTransactions),
-                    AddTransactionCard(_addTransaction),
-                    TransactionOutput(_deleteTransaction),
+                    SizedBox(
+                        height: (mediaQuery.size.height -
+                                appBar.preferredSize.height -
+                                mediaQuery.padding.top) *
+                            0.2,
+                        child: Chart(_recentTransactions)),
+                    SizedBox(
+                        height: (mediaQuery.size.height -
+                                appBar.preferredSize.height -
+                                mediaQuery.padding.top) *
+                            0.4,
+                        child: AddTransactionCard(_addTransaction)),
+                    SizedBox(
+                        height: (mediaQuery.size.height -
+                                appBar.preferredSize.height -
+                                mediaQuery.padding.top) *
+                            0.3,
+                        child: TransactionOutput(_deleteTransaction)),
                   ],
                 ),
               ),

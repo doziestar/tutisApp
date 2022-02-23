@@ -115,7 +115,7 @@ class AddTransactionCard extends StatelessWidget {
             ),
             SizedBox(
               width: double.infinity,
-              height: 50,
+              // height: 50,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [

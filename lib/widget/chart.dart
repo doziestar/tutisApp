@@ -79,7 +79,7 @@ class ChartBar extends StatelessWidget {
           child: Column(
             children: [
               SizedBox(
-                height: 20,
+                height: constraints.maxHeight * 0.15,
                 child: FittedBox(
                   // height: constraints.maxHeight * 0.15,
                   child: Text(
@@ -92,11 +92,11 @@ class ChartBar extends StatelessWidget {
                   ),
                 ),
               ),
-              const SizedBox(
-                height: 5,
+              SizedBox(
+                height: constraints.maxHeight * 0.05,
               ),
               SizedBox(
-                height: 45,
+                height: constraints.maxHeight * 0.6,
                 width: 10,
                 child: Stack(
                   children: [
@@ -124,16 +124,18 @@ class ChartBar extends StatelessWidget {
                   ],
                 ),
               ),
-              const SizedBox(
-                height: 5,
+              SizedBox(
+                height: constraints.maxHeight * 0.05,
               ),
               SizedBox(
-                // height: constraints.maxHeight * 0.15,
-                child: Text(label,
-                    style: const TextStyle(
-                        fontSize: 18,
-                        color: Colors.brown,
-                        fontWeight: FontWeight.bold)),
+                height: constraints.maxHeight * 0.15,
+                child: FittedBox(
+                  child: Text(label,
+                      style: const TextStyle(
+                          fontSize: 18,
+                          color: Colors.brown,
+                          fontWeight: FontWeight.bold)),
+                ),
               ),
             ],
           ),
