@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import './helper.dart';
 import '../models/transaction.dart';
@@ -9,23 +10,20 @@ class TransactionOutput extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 5,
-      child: Container(
-        width: double.infinity,
-        padding: const EdgeInsets.all(8),
-        child: ListView.builder(
-          itemExtent: 60,
-          shrinkWrap: true,
-          reverse: true,
-          itemCount: transactions.length,
-          itemBuilder: (BuildContext context, int index) {
-            return ListTile(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
-              style: ListTileStyle.drawer,
-              isThreeLine: true,
+    return Container(
+      width: double.infinity,
+      // padding: const EdgeInsets.all(8),
+      margin: const EdgeInsets.all(8),
+      child: ListView.builder(
+        itemExtent: 60,
+        shrinkWrap: true,
+        reverse: true,
+        itemCount: transactions.length,
+        itemBuilder: (BuildContext context, int index) {
+          return Card(
+            elevation: 5,
+            margin: const EdgeInsets.symmetric(horizontal: 3, vertical: 2),
+            child: ListTile(
               trailing: IconButton(
                 color: Colors.red,
                 icon: const Icon(Icons.delete),
@@ -33,17 +31,26 @@ class TransactionOutput extends StatelessWidget {
                   deleteTransaction(transactions[index].id);
                 },
               ),
-              leading: const Icon(
-                Icons.task,
-                color: Colors.green,
+              leading: CircleAvatar(
+                foregroundColor: Colors.white,
+                backgroundColor: Colors.green,
+                child: Padding(
+                  padding: const EdgeInsets.all(4),
+                  child: FittedBox(
+                    fit: BoxFit.contain,
+                    child: Text(
+                      '\$${transactions[index].amount.toStringAsFixed(0)}',
+                    ),
+                  ),
+                ),
               ),
               title: Text(transactions[index].title),
               subtitle: Text(
-                '\$${transactions[index].amount.toStringAsFixed(2)}',
+                DateFormat.yMMMd().format(transactions[index].date),
               ),
-            );
-          },
-        ),
+            ),
+          );
+        },
       ),
     );
   }
@@ -55,6 +62,23 @@ class AddTransactionCard extends StatelessWidget {
 
   const AddTransactionCard(this._addTransaction);
 
+  void _presentDatePicker(BuildContext context) {
+    showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2022),
+      lastDate: DateTime.now(),
+    ).then(
+      (pickedDate) {
+        if (pickedDate == null) {
+          return;
+        }
+        dateController = pickedDate;
+        // print(pickedDate);
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -62,7 +86,7 @@ class AddTransactionCard extends StatelessWidget {
       margin: const EdgeInsets.all(8),
       child: Container(
         width: double.infinity,
-        height: 190,
+        // height: 190,
         padding: const EdgeInsets.all(8),
         child: Column(
           children: [
@@ -86,24 +110,48 @@ class AddTransactionCard extends StatelessWidget {
                 ),
               ),
             ),
-            TextButton(
-              onPressed: () {
-                if (titleController.text.isNotEmpty ||
-                    amountController.text.isNotEmpty ||
-                    double.parse(amountController.text) > 0) {
-                  _addTransaction(
-                    titleController.text,
-                    double.parse(amountController.text),
-                  );
-                  resetTransaction();
-                }
-              },
-              child: const Text(
-                'Add Expense',
-                style: TextStyle(
-                    color: Colors.green,
+            SizedBox(
+              width: double.infinity,
+              height: 50,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  const Icon(Icons.date_range, color: Colors.green),
+                  const Text(
+                    'No Date selected! ',
+                    style: TextStyle(color: Colors.red),
+                  ),
+                  TextButton(
+                    onPressed: () => _presentDatePicker(context),
+                    child: const Text('Add Date',
+                        style: TextStyle(
+                            color: Colors.green, fontWeight: FontWeight.bold)),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ElevatedButton(
+                onPressed: () {
+                  if (titleController.text.isNotEmpty ||
+                      amountController.text.isNotEmpty ||
+                      double.parse(amountController.text) > 0) {
+                    _addTransaction(
+                      titleController.text,
+                      double.parse(amountController.text),
+                    );
+                    resetTransaction();
+                  }
+                },
+                child: const Text(
+                  'Add Expense',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
                     fontSize: 18,
-                    fontWeight: FontWeight.bold),
+                  ),
+                ),
               ),
             ),
           ],

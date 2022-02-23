@@ -28,7 +28,7 @@ class Chart extends StatelessWidget {
           'amount': totalSum
         };
       },
-    );
+    ).reversed.toList();
   }
 
   double get maxSpending {
@@ -74,18 +74,21 @@ class ChartBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (ctx, constraints) {
-        return Container(
+        return Padding(
           padding: const EdgeInsets.all(8),
           child: Column(
             children: [
               SizedBox(
-                // height: constraints.maxHeight * 0.15,
-                child: Text(
-                  '\$${spendingAmount.toStringAsFixed(0)}',
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.lightGreen,
+                height: 20,
+                child: FittedBox(
+                  // height: constraints.maxHeight * 0.15,
+                  child: Text(
+                    '\$${spendingAmount.toStringAsFixed(0)}',
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.lightGreen,
+                    ),
                   ),
                 ),
               ),
