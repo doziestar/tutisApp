@@ -73,8 +73,11 @@ class AddTransactionCard extends StatelessWidget {
         if (pickedDate == null) {
           return;
         }
+        // setState(() {
+        //   dateController = pickedDate;
+        //   // print(pickedDate);
+        // });
         dateController = pickedDate;
-        // print(pickedDate);
       },
     );
   }
