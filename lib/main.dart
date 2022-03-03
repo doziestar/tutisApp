@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:tutis/theme/dark.dart';
 import 'package:tutis/theme/light.dart';
 
@@ -18,7 +19,7 @@ class Tutis extends StatelessWidget {
       themeMode: ThemeMode.system,
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Tutis'),
+          title: Center(child: Lottie.asset('assets/lottie/splash.json')),
         ),
       ),
     );
