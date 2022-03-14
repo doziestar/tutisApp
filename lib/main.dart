@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tutis/screens/navigation/help.dart';
 import 'package:tutis/screens/navigation/tab_screen.dart';
 
 import './config/theme/dark.dart';
@@ -18,6 +19,9 @@ class Tutis extends StatelessWidget {
       title: 'Tutis',
       debugShowCheckedModeBanner: false,
       home: TabScreen(),
+      routes: {
+        Help.routeName: (context) => Help(),
+      },
     );
   }
 }
