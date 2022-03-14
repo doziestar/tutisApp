@@ -1,27 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:lottie/lottie.dart';
-import 'package:tutis/theme/dark.dart';
-import 'package:tutis/theme/light.dart';
+import 'package:tutis/screens/navigation/tab_screen.dart';
+
+import './config/theme/dark.dart';
+import './config/theme/light.dart';
 
 void main(List<String> args) {
-  runApp(const Tutis());
+  runApp(Tutis());
 }
 
 class Tutis extends StatelessWidget {
-  const Tutis({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
       theme: lightTheme,
       darkTheme: darkTheme,
       themeMode: ThemeMode.system,
-      home: Scaffold(
-        appBar: AppBar(
-          title: Center(child: Lottie.asset('assets/lottie/splash.json')),
-        ),
-      ),
+      title: 'Tutis',
+      debugShowCheckedModeBanner: false,
+      home: TabScreen(),
     );
   }
 }
