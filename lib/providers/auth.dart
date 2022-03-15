@@ -10,6 +10,27 @@ import '../models/res/login_res.dart';
 import '../models/res/signup_response.dart';
 
 class Auth with ChangeNotifier {
+  String? _token;
+  DateTime? _expiryDate;
+  String? _userId;
+  // Timer _authTimer;
+
+  bool get isAuth {
+    print('token: $_token');
+    print('expiryDate: $_expiryDate');
+    print('userId: $_userId');
+    return token != null;
+  }
+
+  String? get token {
+    if (_expiryDate != null &&
+        _expiryDate!.isAfter(DateTime.now()) &&
+        _token != null) {
+      return _token;
+    }
+    return null;
+  }
+
   Future<UserSignupResponse> signUp(UserData user) async {
     var _url = Uri.parse('http://10.0.2.2:3000/api/v1/auth/signup');
     final response = await http.post(
@@ -48,8 +69,24 @@ class Auth with ChangeNotifier {
     print(_response.body);
     final LoginResponse response =
         LoginResponse.fromJson(json.decode(_response.body));
-    notifyListeners();
-    return response;
+    if (response.token != null) {
+      _token = response.token;
+      _userId = response.data.id;
+      // _expiryDate = DateTime.now().add(
+      //   Duration(
+      //     seconds: int.parse(
+      //       response.expiresIn,
+      //     ),
+      //   ),
+      // );
+      notifyListeners();
+      // _autoLogout();
+      return response;
+    } else {
+      throw Exception('Failed to login');
+    }
+    //   notifyListeners();
+    //   return response;
   }
 
   Future<VerifyPhone> verifyPhone(VerifyPhone user) async {
@@ -67,4 +104,32 @@ class Auth with ChangeNotifier {
     notifyListeners();
     return VerifyPhone.fromJson(json.decode(_response.body));
   }
+
+  // Future<bool> tryAutoLogin() async {
+  //   final _prefs = await SharedPreferences.getInstance();
+  //   if (!_prefs.containsKey('token')) {
+  //     return false;
+  //   }
+  //   final _expiryDate = DateTime.parse(_prefs.getString('expiryDate'));
+  //   if (_expiryDate.isBefore(DateTime.now())) {
+  //     return false;
+  //   }
+  //   final _userId = _prefs.getString('userId');
+  //   final _token = _prefs.getString('token');
+  //   _token = _token;
+  //   _userId = _userId;
+  //   _expiryDate = _expiryDate;
+  //   notifyListeners();
+  //   return true;
+  // }
+
+  // Future<bool> logout() async {
+  //   _token = null;
+  //   _userId = null;
+  //   _expiryDate = null;
+  //   notifyListeners();
+  //   final _prefs = await SharedPreferences.getInstance();
+  //   _prefs.clear();
+  //   return true;
+  // }
 }

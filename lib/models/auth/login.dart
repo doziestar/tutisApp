@@ -3,8 +3,8 @@ class LoginData {
     required this.phoneNumber,
     required this.password,
   });
-  late final String phoneNumber;
-  late final String password;
+  String? phoneNumber;
+  String? password;
 
   LoginData.fromJson(Map<String, dynamic> json) {
     phoneNumber = json['phoneNumber'];

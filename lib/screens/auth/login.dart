@@ -1,7 +1,10 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 import 'package:snippet_coder_utils/ProgressHUD.dart';
+import 'package:tutis/models/auth/login.dart';
+import 'package:tutis/providers/auth.dart';
 
 import 'forgot_password.dart';
 import 'signup.dart';
@@ -23,6 +26,11 @@ class _LoginScreenState extends State<LoginScreen>
   bool _isLoading = false;
   bool _hidePassword = true;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  // final _phoneController = TextEditingController();
+  // final _passwordController = TextEditingController();
+  // final FocusNode _phoneFocusNode = FocusNode();
+  // final FocusNode _passwordFocusNode = FocusNode();
+  final LoginData _loginData = LoginData(phoneNumber: null, password: null);
 
   @override
   void initState() {
@@ -34,6 +42,30 @@ class _LoginScreenState extends State<LoginScreen>
   void dispose() {
     super.dispose();
     _controller.dispose();
+  }
+
+  void login() async {
+    if (_formKey.currentState!.validate()) {
+      setState(() {
+        _isLoading = true;
+      });
+      try {
+        print('login');
+        // print(_passwordController.text);
+        // print(_phoneController.text);
+        // _formKey
+        _formKey.currentState!.save();
+        print(_loginData);
+        await Provider.of<Auth>(context, listen: false).login(_loginData);
+        // Navigator.pushReplacementNamed(context, HomeScreen.routeName);
+      } on PlatformException {
+        // ProgressHUD.showErrorWithStatus(e.message);
+      } finally {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    }
   }
 
   @override
@@ -105,8 +137,6 @@ class _LoginScreenState extends State<LoginScreen>
             ),
             const SizedBox(height: 20),
             TextFormField(
-              maxLength: 13,
-              maxLengthEnforcement: MaxLengthEnforcement.enforced,
               decoration: InputDecoration(
                 labelText: 'Phone Number',
                 labelStyle: TextStyle(
@@ -135,9 +165,13 @@ class _LoginScreenState extends State<LoginScreen>
                 }
                 return null;
               },
+              onSaved: (value) {
+                _loginData.phoneNumber = value!;
+              },
             ),
             const SizedBox(height: 20),
             TextFormField(
+              // controller: _passwordController,
               decoration: InputDecoration(
                 labelText: 'Password',
                 labelStyle: TextStyle(
@@ -172,6 +206,9 @@ class _LoginScreenState extends State<LoginScreen>
               style: TextStyle(
                 color: Theme.of(context).textTheme.headline1!.color,
               ),
+              onSaved: (value) {
+                _loginData.password = value!;
+              },
               validator: (value) {
                 if (value!.isEmpty) {
                   return 'Please enter your password';
@@ -197,8 +234,10 @@ class _LoginScreenState extends State<LoginScreen>
                         ),
                         recognizer: TapGestureRecognizer()
                           ..onTap = () {
-                            Navigator.pushNamed(
-                                context, ForgotPasswordScreen.routeName);
+                            Navigator.popAndPushNamed(
+                              context,
+                              ForgotPasswordScreen.routeName,
+                            );
                           },
                       ),
                     ],
@@ -222,6 +261,7 @@ class _LoginScreenState extends State<LoginScreen>
                   if (_formKey.currentState!.validate()) {
                     setState(() {
                       _isLoading = true;
+                      login();
                     });
                     Future.delayed(const Duration(seconds: 2), () {
                       setState(() {
