@@ -1,21 +1,55 @@
-import 'package:flutter/gestures.dart';
+// Container(
+//   width: MediaQuery.of(context).size.width,
+//   height: MediaQuery.of(context).size.height / 2,
+//   decoration: const BoxDecoration(
+//     gradient: LinearGradient(
+//       begin: Alignment.topCenter,
+//       end: Alignment.bottomCenter,
+//       colors: [
+//         // Colors.white,
+//         Color.fromARGB(255, 15, 63, 28),
+//         Color(0xff004e15)
+//         // Colors.white,
+//       ],
+//     ),
+//     borderRadius: BorderRadius.only(
+//       bottomLeft: Radius.circular(100),
+//       bottomRight: Radius.circular(100),
+//     ),
+//   ),
+//   child: Column(
+//     mainAxisAlignment: MainAxisAlignment.end,
+//     crossAxisAlignment: CrossAxisAlignment.center,
+//     children: [
+//       Align(
+//         alignment: Alignment.center,
+//         child: Image.asset(
+//           'assets/images/tutissha.png',
+//           width: MediaQuery.of(context).size.width / 2,
+//           height: MediaQuery.of(context).size.height / 3,
+//           fit: BoxFit.contain,
+//         ),
+//       ),
+//       const SizedBox(height: 20),
+//     ],
+//   ),
+// ),
+
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:snippet_coder_utils/ProgressHUD.dart';
 
-import 'forgot_password.dart';
-import 'signup.dart';
+import 'login.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+class RegisterScreen extends StatefulWidget {
+  const RegisterScreen({Key? key}) : super(key: key);
 
   static const String routeName = '/login';
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<RegisterScreen> createState() => _RegisterScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen>
+class _RegisterScreenState extends State<RegisterScreen>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation;
@@ -40,13 +74,11 @@ class _LoginScreenState extends State<LoginScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
-      body: Center(
-        child: ProgressHUD(
-          inAsyncCall: _isLoading,
-          key: UniqueKey(),
-          child: _loginUI(BuildContext, context),
-          // opacity: 0.3,
-        ),
+      body: ProgressHUD(
+        inAsyncCall: _isLoading,
+        key: UniqueKey(),
+        child: _loginUI(BuildContext, context),
+        opacity: 0.3,
       ),
     );
   }
@@ -54,22 +86,51 @@ class _LoginScreenState extends State<LoginScreen>
   Widget _loginUI(BuildContext, context) {
     return SingleChildScrollView(
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Align(
-            alignment: Alignment.center,
-            child: Image.asset(
-              'assets/images/tutissha.png',
-              width: MediaQuery.of(context).size.width / 2,
-              // height: MediaQuery.of(context).size.height / 3,
-              fit: BoxFit.contain,
+          Container(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height / 2,
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Colors.white,
+                  Color.fromARGB(255, 15, 63, 28),
+                  Colors.white,
+                ],
+              ),
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(100),
+                bottomRight: Radius.circular(100),
+              ),
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Align(
+                  alignment: Alignment.center,
+                  child: Image.asset(
+                    'assets/images/tutissha.png',
+                    fit: BoxFit.contain,
+                  ),
+                ),
+                const SizedBox(height: 20),
+                Text(
+                  'Login to your account',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).textTheme.headline1!.color,
+                  ),
+                ),
+              ],
             ),
           ),
-
-          // const SizedBox(height: 20),
           Form(
-            key: _formKey,
             child: _loginForm(context),
           ),
         ],
@@ -78,60 +139,43 @@ class _LoginScreenState extends State<LoginScreen>
   }
 
   Widget _loginForm(BuildContext context) {
-    return Card(
-      margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-      color: Theme.of(context).cardColor,
-      shadowColor: Theme.of(context).cardColor,
-      elevation: 10,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(15.0),
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      child: Card(
+        // color: Colors.white,\
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+        elevation: 5,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 20),
-            Center(
-              child: Text(
-                'Login to your account',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Theme.of(context).textTheme.headline1!.color,
-                ),
-              ),
-            ),
-            const SizedBox(height: 20),
             TextFormField(
-              maxLength: 13,
-              maxLengthEnforcement: MaxLengthEnforcement.enforced,
               decoration: InputDecoration(
                 labelText: 'Phone Number',
-                labelStyle: TextStyle(
-                  color: Theme.of(context).textTheme.headline1!.color,
+                labelStyle: const TextStyle(
+                  color: Colors.white,
                 ),
                 enabledBorder: UnderlineInputBorder(
-                  borderRadius: BorderRadius.circular(20),
                   borderSide: BorderSide(
-                    color: Theme.of(context).textTheme.headline1!.color!,
+                    color: Theme.of(context).dividerColor,
                   ),
                 ),
                 focusedBorder: UnderlineInputBorder(
-                  borderRadius: BorderRadius.circular(20),
                   borderSide: BorderSide(
-                    color: Theme.of(context).textTheme.headline1!.color!,
+                    color: Theme.of(context).cardColor,
                   ),
                 ),
               ),
               keyboardType: TextInputType.phone,
-              style: TextStyle(
-                color: Theme.of(context).textTheme.headline1!.color,
+              style: const TextStyle(
+                color: Colors.white,
               ),
               validator: (value) {
                 if (value!.isEmpty) {
-                  return 'Please enter your phone number';
+                  return 'Please enter your email';
                 }
                 return null;
               },
@@ -140,25 +184,23 @@ class _LoginScreenState extends State<LoginScreen>
             TextFormField(
               decoration: InputDecoration(
                 labelText: 'Password',
-                labelStyle: TextStyle(
-                  color: Theme.of(context).textTheme.headline1!.color,
+                labelStyle: const TextStyle(
+                  color: Colors.white,
                 ),
                 enabledBorder: UnderlineInputBorder(
-                  borderRadius: BorderRadius.circular(20),
                   borderSide: BorderSide(
-                    color: Theme.of(context).textTheme.headline1!.color!,
+                    color: Theme.of(context).dividerColor,
                   ),
                 ),
                 focusedBorder: UnderlineInputBorder(
-                  borderRadius: BorderRadius.circular(20),
                   borderSide: BorderSide(
-                    color: Theme.of(context).textTheme.headline1!.color!,
+                    color: Theme.of(context).cardColor,
                   ),
                 ),
                 suffixIcon: IconButton(
                   icon: Icon(
                     _hidePassword ? Icons.visibility_off : Icons.visibility,
-                    color: Theme.of(context).textTheme.headline1!.color,
+                    color: Theme.of(context).iconTheme.color,
                   ),
                   onPressed: () {
                     setState(() {
@@ -169,8 +211,8 @@ class _LoginScreenState extends State<LoginScreen>
               ),
               keyboardType: TextInputType.text,
               obscureText: _hidePassword,
-              style: TextStyle(
-                color: Theme.of(context).textTheme.headline1!.color,
+              style: const TextStyle(
+                color: Colors.white,
               ),
               validator: (value) {
                 if (value!.isEmpty) {
@@ -180,32 +222,6 @@ class _LoginScreenState extends State<LoginScreen>
               },
             ),
             const SizedBox(height: 20),
-            Center(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 5),
-                child: Text.rich(
-                  TextSpan(
-                    text: 'Forgot Password?',
-                    style: TextStyle(
-                      color: Theme.of(context).textTheme.headline1!.color,
-                    ),
-                    children: [
-                      TextSpan(
-                        text: ' Click here',
-                        style: TextStyle(
-                          color: Theme.of(context).primaryColor,
-                        ),
-                        recognizer: TapGestureRecognizer()
-                          ..onTap = () {
-                            Navigator.pushNamed(
-                                context, ForgotPasswordScreen.routeName);
-                          },
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
             SizedBox(
               width: MediaQuery.of(context).size.width,
               height: 50,
@@ -254,7 +270,7 @@ class _LoginScreenState extends State<LoginScreen>
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const RegisterScreen(),
+                        builder: (context) => const LoginScreen(),
                       ),
                     );
                   },
