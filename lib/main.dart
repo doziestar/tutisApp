@@ -1,17 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:provider/provider.dart';
-import 'package:tutis/screens/auth/login.dart';
-import 'package:tutis/screens/splash/splash.dart';
 
 import './config/theme/dark.dart';
 import './config/theme/light.dart';
 import '../routes/routes.dart';
+import '../screens/auth/login.dart';
+import '../screens/splash/splash.dart';
 import 'providers/auth.dart';
 import 'screens/navigation/tab_screen.dart';
 
-void main(List<String> args) {
+// void main(List<String> args) {
+//   runApp(Tutis());
+// }
+
+void main() {
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   runApp(Tutis());
 }
+
+// whenever your initialization is completed, remove the splash screen:
+// FlutterNativeSplash.remove();
 
 class Tutis extends StatelessWidget {
   @override

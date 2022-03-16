@@ -26,22 +26,18 @@ class _LoginScreenState extends State<LoginScreen>
   bool _isLoading = false;
   bool _hidePassword = true;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  // final _phoneController = TextEditingController();
-  // final _passwordController = TextEditingController();
-  // final FocusNode _phoneFocusNode = FocusNode();
-  // final FocusNode _passwordFocusNode = FocusNode();
   final LoginData _loginData = LoginData(phoneNumber: null, password: null);
 
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(vsync: this);
+    // _controller = AnimationController(vsync: this);
   }
 
   @override
   void dispose() {
     super.dispose();
-    _controller.dispose();
+    // _controller.dispose();
   }
 
   void login() async {
@@ -50,14 +46,9 @@ class _LoginScreenState extends State<LoginScreen>
         _isLoading = true;
       });
       try {
-        print('login');
-        // print(_passwordController.text);
-        // print(_phoneController.text);
-        // _formKey
         _formKey.currentState!.save();
         print(_loginData);
         await Provider.of<Auth>(context, listen: false).login(_loginData);
-        // Navigator.pushReplacementNamed(context, HomeScreen.routeName);
       } on PlatformException {
         // ProgressHUD.showErrorWithStatus(e.message);
       } finally {
@@ -94,12 +85,9 @@ class _LoginScreenState extends State<LoginScreen>
             child: Image.asset(
               'assets/images/tutissha.png',
               width: MediaQuery.of(context).size.width / 2,
-              // height: MediaQuery.of(context).size.height / 3,
               fit: BoxFit.contain,
             ),
           ),
-
-          // const SizedBox(height: 20),
           Form(
             key: _formKey,
             child: _loginForm(context),
@@ -171,7 +159,6 @@ class _LoginScreenState extends State<LoginScreen>
             ),
             const SizedBox(height: 20),
             TextFormField(
-              // controller: _passwordController,
               decoration: InputDecoration(
                 labelText: 'Password',
                 labelStyle: TextStyle(
@@ -249,7 +236,6 @@ class _LoginScreenState extends State<LoginScreen>
               width: MediaQuery.of(context).size.width,
               height: 50,
               child: ElevatedButton(
-                // color: Theme.of(context).primaryColor,
                 child: const Text(
                   'Login',
                   style: TextStyle(
