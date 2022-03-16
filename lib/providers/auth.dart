@@ -1,7 +1,9 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/auth/login.dart';
 import '../models/auth/user_signup.dart';
@@ -72,21 +74,28 @@ class Auth with ChangeNotifier {
     if (response.token != null) {
       _token = response.token;
       _userId = response.data.id;
-      // _expiryDate = DateTime.now().add(
-      //   Duration(
-      //     seconds: int.parse(
-      //       response.expiresIn,
-      //     ),
-      //   ),
-      // );
+      _expiryDate = DateTime.now().add(
+        Duration(
+          seconds: response.expiresIn,
+        ),
+      );
+      final _prefs = await SharedPreferences.getInstance();
+      final _userData = json.encode(
+        {
+          'token': _token,
+          'userId': _userId,
+          'expiryDate': _expiryDate!.toIso8601String(),
+        },
+      );
+      _prefs.setString('userData', _userData);
+
+      _autoLogout();
       notifyListeners();
-      // _autoLogout();
       return response;
     } else {
       throw Exception('Failed to login');
     }
-    //   notifyListeners();
-    //   return response;
+    // notifyListeners();
   }
 
   Future<VerifyPhone> verifyPhone(VerifyPhone user) async {
@@ -105,31 +114,46 @@ class Auth with ChangeNotifier {
     return VerifyPhone.fromJson(json.decode(_response.body));
   }
 
-  // Future<bool> tryAutoLogin() async {
-  //   final _prefs = await SharedPreferences.getInstance();
-  //   if (!_prefs.containsKey('token')) {
-  //     return false;
-  //   }
-  //   final _expiryDate = DateTime.parse(_prefs.getString('expiryDate'));
-  //   if (_expiryDate.isBefore(DateTime.now())) {
-  //     return false;
-  //   }
-  //   final _userId = _prefs.getString('userId');
-  //   final _token = _prefs.getString('token');
-  //   _token = _token;
-  //   _userId = _userId;
-  //   _expiryDate = _expiryDate;
-  //   notifyListeners();
-  //   return true;
-  // }
+  Future<bool> tryAutoLogin() async {
+    final _prefs = await SharedPreferences.getInstance();
+    if (!_prefs.containsKey('token')) {
+      return false;
+    }
+    final _userData = json.decode(_prefs.getString('_userData') ?? '');
 
-  // Future<bool> logout() async {
-  //   _token = null;
-  //   _userId = null;
-  //   _expiryDate = null;
-  //   notifyListeners();
-  //   final _prefs = await SharedPreferences.getInstance();
-  //   _prefs.clear();
-  //   return true;
-  // }
+    _expiryDate = DateTime.parse(_userData('expiryDate'));
+    if (_expiryDate!.isBefore(DateTime.now())) {
+      return false;
+    }
+    _userId = _userData['userId'];
+    _token = _userData['token'];
+    _token = _token;
+    _userId = _userId;
+    _expiryDate = _expiryDate;
+    notifyListeners();
+    return true;
+  }
+
+  Future<bool> logout() async {
+    _token = null;
+    _userId = null;
+    _expiryDate = null;
+    notifyListeners();
+    // final _prefs = await SharedPreferences.getInstance();
+    // _prefs.clear();
+    return true;
+  }
+
+  void _autoLogout() {
+    // var _authTimer = Timer(Duration(seconds: 10), logout);
+    // if (_authTimer != null) {
+    //   _authTimer.cancel();
+    // }
+    final _authTimer = Timer(
+      Duration(
+        seconds: _expiryDate!.difference(DateTime.now()).inSeconds,
+      ),
+      logout,
+    );
+  }
 }

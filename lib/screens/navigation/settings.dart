@@ -2,6 +2,9 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../../providers/auth.dart';
 
 class SettingsScreen extends StatelessWidget {
   @override
@@ -180,7 +183,9 @@ class SettingsScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 20),
                   OutlinedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Provider.of<Auth>(context, listen: false).logout();
+                      },
                       child: Text('Logout',
                           style: Theme.of(context).textTheme.titleSmall)),
                 ],
