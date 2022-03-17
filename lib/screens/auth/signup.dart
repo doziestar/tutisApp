@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 import 'package:snippet_coder_utils/ProgressHUD.dart';
 import 'package:tutis/screens/auth/login.dart';
+
+import '../../models/auth/user_signup.dart';
+import '../../providers/auth.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key? key}) : super(key: key);
@@ -14,23 +18,49 @@ class RegisterScreen extends StatefulWidget {
 
 class _RegisterScreenState extends State<RegisterScreen>
     with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
-  late Animation<double> _animation;
+  // late AnimationController _controller;
+  // late Animation<double> _animation;
   final bool _isLogin = true;
   bool _isLoading = false;
   bool _hidePassword = true;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final UserData _signUpData = UserData(
+    phoneNumber: null,
+    password: null,
+    firstName: null,
+    lastName: null,
+    email: null,
+  );
 
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(vsync: this);
+    // _controller = AnimationController(vsync: this);
   }
 
   @override
   void dispose() {
     super.dispose();
-    _controller.dispose();
+    // _controller.dispose();
+  }
+
+  void signup() async {
+    if (_formKey.currentState!.validate()) {
+      setState(() {
+        _isLoading = true;
+      });
+      try {
+        _formKey.currentState!.save();
+        print(_signUpData);
+        await Provider.of<Auth>(context, listen: false).signUp(_signUpData);
+      } on PlatformException {
+        // ProgressHUD.showErrorWithStatus(e.message);
+      } finally {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    }
   }
 
   @override
@@ -102,8 +132,6 @@ class _RegisterScreenState extends State<RegisterScreen>
             ),
             const SizedBox(height: 20),
             TextFormField(
-              maxLength: 13,
-              maxLengthEnforcement: MaxLengthEnforcement.enforced,
               decoration: InputDecoration(
                 labelText: 'Phone Number',
                 labelStyle: TextStyle(
@@ -132,11 +160,10 @@ class _RegisterScreenState extends State<RegisterScreen>
                 }
                 return null;
               },
+              onSaved: (value) => _signUpData.phoneNumber = value,
             ),
             const SizedBox(height: 20),
             TextFormField(
-              // maxLength: 13,
-              // maxLengthEnforcement: MaxLengthEnforcement.enforced,
               decoration: InputDecoration(
                 labelText: 'Email',
                 labelStyle: TextStyle(
@@ -165,11 +192,10 @@ class _RegisterScreenState extends State<RegisterScreen>
                 }
                 return null;
               },
+              onSaved: (value) => _signUpData.email = value,
             ),
             const SizedBox(height: 20),
             TextFormField(
-              // maxLength: 13,
-              // maxLengthEnforcement: MaxLengthEnforcement.enforced,
               decoration: InputDecoration(
                 labelText: 'Full Name',
                 labelStyle: TextStyle(
@@ -197,6 +223,10 @@ class _RegisterScreenState extends State<RegisterScreen>
                   return 'Please enter your phone number';
                 }
                 return null;
+              },
+              onSaved: (value) {
+                _signUpData.firstName = value;
+                _signUpData.lastName = value;
               },
             ),
             const SizedBox(height: 20),
@@ -241,6 +271,7 @@ class _RegisterScreenState extends State<RegisterScreen>
                 }
                 return null;
               },
+              onSaved: (value) => _signUpData.password = value,
             ),
             const SizedBox(height: 20),
             TextFormField(
@@ -292,7 +323,7 @@ class _RegisterScreenState extends State<RegisterScreen>
               child: ElevatedButton(
                 // color: Theme.of(context).primaryColor,
                 child: const Text(
-                  'Login',
+                  'Sign Up',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 20,
@@ -302,6 +333,7 @@ class _RegisterScreenState extends State<RegisterScreen>
                   if (_formKey.currentState!.validate()) {
                     setState(() {
                       _isLoading = true;
+                      signup();
                     });
                     Future.delayed(const Duration(seconds: 2), () {
                       setState(() {

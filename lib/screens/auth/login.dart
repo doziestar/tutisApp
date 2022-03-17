@@ -20,8 +20,8 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen>
     with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
-  late Animation<double> _animation;
+  // late AnimationController _controller;
+  // late Animation<double> _animation;
   final bool _isLogin = true;
   bool _isLoading = false;
   bool _hidePassword = true;

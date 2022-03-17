@@ -34,7 +34,7 @@ class Auth with ChangeNotifier {
   }
 
   Future<UserSignupResponse> signUp(UserData user) async {
-    var _url = Uri.parse('http://10.0.2.2:3000/api/v1/auth/signup');
+    var _url = Uri.parse('https://tutis.herokuapp.com/api/v1/auth/signup');
     final response = await http.post(
       _url,
       headers: {
@@ -57,7 +57,7 @@ class Auth with ChangeNotifier {
 
   Future<LoginResponse> login(LoginData user) async {
     print('object user');
-    final _url = Uri.parse('http://127.0.0.1:3000/api/v1/auth/login');
+    final _url = Uri.parse('https://tutis.herokuapp.com/api/v1/auth/login');
     final _body = LoginData(
       phoneNumber: user.phoneNumber,
       password: user.password,
@@ -99,7 +99,8 @@ class Auth with ChangeNotifier {
   }
 
   Future<VerifyPhone> verifyPhone(VerifyPhone user) async {
-    final _url = Uri.parse('http://127.0.0.1:3000/api/v1/sms/verify-code');
+    final _url =
+        Uri.parse('https://tutis.herokuapp.com/api/v1/sms/verify-code');
     final _body = VerifyPhone(
       phoneNumber: user.phoneNumber,
       code: user.code,

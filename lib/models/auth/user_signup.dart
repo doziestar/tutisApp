@@ -6,11 +6,11 @@ class UserData {
     required this.phoneNumber,
     required this.password,
   });
-  late final String firstName;
-  late final String lastName;
-  late final String email;
-  late final String phoneNumber;
-  late final String password;
+  String? firstName;
+  String? lastName;
+  String? email;
+  String? phoneNumber;
+  String? password;
 
   UserData.fromJson(Map<String, dynamic> json) {
     firstName = json['firstName'];

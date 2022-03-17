@@ -6,11 +6,11 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  @override
-  void initState() {
-    super.initState();
-    _navigateToHome();
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   _navigateToHome();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -23,8 +23,8 @@ class _SplashScreenState extends State<SplashScreen> {
     );
   }
 
-  _navigateToHome() async {
-    await Future.delayed(const Duration(seconds: 3));
-    Navigator.of(context).pushReplacementNamed('/home');
-  }
+  // _navigateToHome() async {
+  //   await Future.delayed(const Duration(seconds: 3));
+  //   Navigator.of(context).pushReplacementNamed('/home');
+  // }
 }
